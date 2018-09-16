@@ -28,7 +28,21 @@ public class ExmoFrame {
         this.secret = null;
     }
 
+    public String getKey() {
+        return key;
+    }
 
+    public void setKey(String key) {
+        this.key = key;
+    }
+
+    public String getSecret() {
+        return secret;
+    }
+
+    public void setSecret(String secret) {
+        this.secret = secret;
+    }
 
     private String doPostData(Map<String, String> arguments) {
         if (arguments == null)
