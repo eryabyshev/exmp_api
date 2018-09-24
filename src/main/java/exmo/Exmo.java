@@ -5,6 +5,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import response.OrderBook;
+import response.Ticker;
 import response.Trades;
 
 import java.util.ArrayList;
@@ -81,7 +82,6 @@ public class Exmo {
             return null;
 
         JSONParser parser = new JSONParser();
-
         Object obj = parser.parse(tradesResult);
         JSONObject jo = (JSONObject) obj;
 
@@ -140,7 +140,7 @@ public class Exmo {
 
         JSONParser parser = new JSONParser();
         JSONObject obj = (JSONObject) parser.parse(result);
-        JSONObject jo = (JSONObject) obj.get("BTC_USD");
+        JSONObject jo = (JSONObject) obj.get(pairName);
 
         double bidQuantity = Double.valueOf(jo.get("bid_quantity").toString());
         double bidAmount = Double.valueOf(jo.get("bid_amount").toString());
@@ -167,6 +167,57 @@ public class Exmo {
             result.add(pqs);
         }
         return result;
+    }
+
+    /**
+     * @https://api.exmo.com/v1/ticker/
+     * method getTicker(String pairName)
+     * returns Ticker object,this object is equivalent
+     * response:
+     * {
+     *   "BTC_USD": {
+     *     "buy_price": "589.06",
+     *     "sell_price": "592",
+     *     "last_trade": "591.221",
+     *     "high": "602.082",
+     *     "low": "584.51011695",
+     *     "avg": "591.14698808",
+     *     "vol": "167.59763535",
+     *     "vol_curr": "99095.17162071",
+     *     "updated": 1470250973
+     *   }
+     * }
+     * where,
+     * high - the maximum transaction price for 24 hours
+     * low - the minimum transaction price for 24 hours
+     * avg - average transaction price for 24 hours
+     * vol - the volume of all transactions for 24 hours
+     * vol_curr - the sum of all transactions for 24 hours
+     * last_trade - the last transaction price
+     * buy_price - current maximum purchase price
+     * sell_price - current minimum sale price
+     * updated - date and time of data update
+     */
+    public Ticker getTicker(String pairName) throws ParseException {
+        String result = exmoFrame.publicAPIRequest("ticker", null);
+
+        JSONParser parser = new JSONParser();
+        JSONObject jo = (JSONObject) parser.parse(result);
+        JSONObject target = (JSONObject) jo.get(pairName);
+
+        double high =  Double.valueOf(target.get("high").toString());
+        double low =  Double.valueOf(target.get("low").toString());
+        double avg =  Double.valueOf(target.get("avg").toString());
+        double vol =  Double.valueOf(target.get("vol").toString());
+        double volCurr =  Double.valueOf(target.get("vol_curr").toString());
+        long updated = Long.valueOf(target.get("updated").toString());
+        double lastTrade =  Double.valueOf(target.get("last_trade").toString());
+        double buyPrice =  Double.valueOf(target.get("buy_price").toString());
+        double sellPrice =  Double.valueOf(target.get("sell_price").toString());
+
+        return new Ticker(high, low, avg, vol,
+                volCurr, lastTrade, buyPrice, sellPrice, updated);
+
     }
 
 

@@ -5,17 +5,13 @@ import java.util.Date;
 
 public class Trades {
 
-    //дата и время сделки в формате Unix
+
     private Date date;
-    //сумма сделки
+
     private double amount;
-    //идентификатор сделки
     private long tradeId;
-    //кол-во по сделке
     private double quantity;
-    //цена сделки
     private double price;
-    //тип сделки
     private String type;
 
     public Trades(long date, double amount, long tradeId, double quantity, double price, String type) {

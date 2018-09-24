@@ -5,11 +5,11 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import response.OrderBook;
+import response.Ticker;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class Test {
 
@@ -67,47 +67,77 @@ public class Test {
 
 
             //order_book
+//            ExmoFrame exmoFrame = new ExmoFrame();
+//
+//            Map<String, String> param = new HashMap<>();
+//            param.put("pair", "BTC_USD");
+//            param.put("limit", "2");
+//
+//            String result = exmoFrame.publicAPIRequest("order_book", param);
+//            System.out.println(result);
+//
+//            JSONParser parser = new JSONParser();
+//            JSONObject obj = (JSONObject) parser.parse(result);
+//            JSONObject jo = (JSONObject) obj.get("BTC_USD");
+//
+//            double bidQuantity = Double.valueOf(jo.get("bid_quantity").toString());
+//            double bidAmount = Double.valueOf(jo.get("bid_amount").toString());
+//            double askTop = Double.valueOf(jo.get("ask_top").toString());
+//            double askAmount = Double.valueOf(jo.get("ask_amount").toString());
+//            double bidTop = Double.valueOf(jo.get("bid_top").toString());
+//            double askQuantity = Double.valueOf(jo.get("ask_quantity").toString());
+//
+//            List<OrderBook.PriceQuantitySumm> ask = dolist((JSONArray) jo.get("ask"));
+//            List<OrderBook.PriceQuantitySumm> bid = dolist((JSONArray) jo.get("bid"));
+//
+//            OrderBook orderBook = new OrderBook(askQuantity, askAmount, askTop, bidQuantity, bidAmount, bidTop, ask, bid);
+//
+//
+//        }
+//
+//
+//        public static List<OrderBook.PriceQuantitySumm> dolist(JSONArray jsonArray){
+//            List<OrderBook.PriceQuantitySumm> result = new ArrayList<>();
+//
+//            for(Object i : jsonArray){
+//                JSONArray ja = (JSONArray)i;
+//                OrderBook.PriceQuantitySumm pqs
+//                        = new OrderBook.PriceQuantitySumm(Double.valueOf(ja.get(0).toString()),
+//                        Double.valueOf(ja.get(1).toString()), Double.valueOf(ja.get(2).toString()));
+//
+//                result.add(pqs);
+//            }
+//            return result;
+
             ExmoFrame exmoFrame = new ExmoFrame();
-
-            Map<String, String> param = new HashMap<>();
-            param.put("pair", "BTC_USD");
-            param.put("limit", "2");
-
-            String result = exmoFrame.publicAPIRequest("order_book", param);
+            String result = exmoFrame.publicAPIRequest("ticker", null);
             System.out.println(result);
 
             JSONParser parser = new JSONParser();
-            JSONObject obj = (JSONObject) parser.parse(result);
-            JSONObject jo = (JSONObject) obj.get("BTC_USD");
+            JSONObject jo = (JSONObject) parser.parse(result);
+            JSONObject target = (JSONObject) jo.get("BTC_USD");
 
-            double bidQuantity = Double.valueOf(jo.get("bid_quantity").toString());
-            double bidAmount = Double.valueOf(jo.get("bid_amount").toString());
-            double askTop = Double.valueOf(jo.get("ask_top").toString());
-            double askAmount = Double.valueOf(jo.get("ask_amount").toString());
-            double bidTop = Double.valueOf(jo.get("bid_top").toString());
-            double askQuantity = Double.valueOf(jo.get("ask_quantity").toString());
+            double high =  Double.valueOf(target.get("high").toString());
+            double low =  Double.valueOf(target.get("low").toString());
+            double avg =  Double.valueOf(target.get("avg").toString());
+            double vol =  Double.valueOf(target.get("vol").toString());
+            double volCurr =  Double.valueOf(target.get("vol_curr").toString());
+            long updated = Long.valueOf(target.get("updated").toString());
+            double lastTrade =  Double.valueOf(target.get("last_trade").toString());
+            double buyPrice =  Double.valueOf(target.get("buy_price").toString());
+            double sellPrice =  Double.valueOf(target.get("sell_price").toString());
 
-            List<OrderBook.PriceQuantitySumm> ask = dolist((JSONArray) jo.get("ask"));
-            List<OrderBook.PriceQuantitySumm> bid = dolist((JSONArray) jo.get("bid"));
-
-            OrderBook orderBook = new OrderBook(askQuantity, askAmount, askTop, bidQuantity, bidAmount, bidTop, ask, bid);
-
-
-        }
+            Ticker ticker = new Ticker(high, low, avg, vol,
+                    volCurr, lastTrade, buyPrice, sellPrice, updated);
 
 
-        public static List<OrderBook.PriceQuantitySumm> dolist(JSONArray jsonArray){
-            List<OrderBook.PriceQuantitySumm> result = new ArrayList<>();
 
-            for(Object i : jsonArray){
-                JSONArray ja = (JSONArray)i;
-                OrderBook.PriceQuantitySumm pqs
-                        = new OrderBook.PriceQuantitySumm(Double.valueOf(ja.get(0).toString()),
-                        Double.valueOf(ja.get(1).toString()), Double.valueOf(ja.get(2).toString()));
 
-                result.add(pqs);
-            }
-            return result;
-        }
+
+
+
+
+
+       }
 
 }

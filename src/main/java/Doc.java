@@ -1,6 +1,7 @@
 import exmo.Exmo;
 import org.json.simple.parser.ParseException;
 import response.OrderBook;
+import response.Ticker;
 import response.Trades;
 
 import java.util.List;
@@ -94,6 +95,38 @@ public class Doc {
         }
 
 
+        /**
+         * @https://api.exmo.com/v1/ticker/
+         * method getTicker(String pairName)
+         * returns Ticker object,this object is equivalent
+         * response:
+         * {
+         *   "BTC_USD": {
+         *     "buy_price": "589.06",
+         *     "sell_price": "592",
+         *     "last_trade": "591.221",
+         *     "high": "602.082",
+         *     "low": "584.51011695",
+         *     "avg": "591.14698808",
+         *     "vol": "167.59763535",
+         *     "vol_curr": "99095.17162071",
+         *     "updated": 1470250973
+         *   }
+         * }
+         * where,
+         * high - the maximum transaction price for 24 hours
+         * low - the minimum transaction price for 24 hours
+         * avg - average transaction price for 24 hours
+         * vol - the volume of all transactions for 24 hours
+         * vol_curr - the sum of all transactions for 24 hours
+         * last_trade - the last transaction price
+         * buy_price - current maximum purchase price
+         * sell_price - current minimum sale price
+         * updated - date and time of data update
+         */
+        Exmo exmoTicker = new Exmo();
+        Ticker ticker = exmoTicker.getTicker("BTC_USD");
+        System.out.println("1 BTC = " + ticker.getLastTrade() + " USD");
 
     }
 
