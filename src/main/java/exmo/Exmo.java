@@ -221,6 +221,19 @@ public class Exmo {
     }
 
 
+    /**
+     * @link https://api.exmo.com/v1/currency/
+     * method getCurrency() returnes list of String.
+     * This list is equivalen response:
+     * ["USD","EUR","RUB","BTC","DOGE","LTC"]
+     */
+    public List<String> getCurrency() throws ParseException {
+        String result = exmoFrame.publicAPIRequest("currency", null);
+        JSONParser parser = new JSONParser();
+        return new ArrayList<>((JSONArray) parser.parse(result));
+    }
+
+
 
 
 

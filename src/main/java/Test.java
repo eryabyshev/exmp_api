@@ -109,26 +109,36 @@ public class Test {
 //            }
 //            return result;
 
+//            ExmoFrame exmoFrame = new ExmoFrame();
+//            String result = exmoFrame.publicAPIRequest("ticker", null);
+//            System.out.println(result);
+//
+//            JSONParser parser = new JSONParser();
+//            JSONObject jo = (JSONObject) parser.parse(result);
+//            JSONObject target = (JSONObject) jo.get("BTC_USD");
+//
+//            double high =  Double.valueOf(target.get("high").toString());
+//            double low =  Double.valueOf(target.get("low").toString());
+//            double avg =  Double.valueOf(target.get("avg").toString());
+//            double vol =  Double.valueOf(target.get("vol").toString());
+//            double volCurr =  Double.valueOf(target.get("vol_curr").toString());
+//            long updated = Long.valueOf(target.get("updated").toString());
+//            double lastTrade =  Double.valueOf(target.get("last_trade").toString());
+//            double buyPrice =  Double.valueOf(target.get("buy_price").toString());
+//            double sellPrice =  Double.valueOf(target.get("sell_price").toString());
+//
+//            Ticker ticker = new Ticker(high, low, avg, vol,
+//                    volCurr, lastTrade, buyPrice, sellPrice, updated);
+
+
             ExmoFrame exmoFrame = new ExmoFrame();
-            String result = exmoFrame.publicAPIRequest("ticker", null);
-            System.out.println(result);
-
+            String result = exmoFrame.publicAPIRequest("currency", null);
             JSONParser parser = new JSONParser();
-            JSONObject jo = (JSONObject) parser.parse(result);
-            JSONObject target = (JSONObject) jo.get("BTC_USD");
+            List<String>list = new ArrayList<>((JSONArray) parser.parse(result));
 
-            double high =  Double.valueOf(target.get("high").toString());
-            double low =  Double.valueOf(target.get("low").toString());
-            double avg =  Double.valueOf(target.get("avg").toString());
-            double vol =  Double.valueOf(target.get("vol").toString());
-            double volCurr =  Double.valueOf(target.get("vol_curr").toString());
-            long updated = Long.valueOf(target.get("updated").toString());
-            double lastTrade =  Double.valueOf(target.get("last_trade").toString());
-            double buyPrice =  Double.valueOf(target.get("buy_price").toString());
-            double sellPrice =  Double.valueOf(target.get("sell_price").toString());
 
-            Ticker ticker = new Ticker(high, low, avg, vol,
-                    volCurr, lastTrade, buyPrice, sellPrice, updated);
+
+
 
 
 

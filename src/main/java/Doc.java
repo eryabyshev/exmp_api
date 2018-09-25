@@ -128,6 +128,19 @@ public class Doc {
         Ticker ticker = exmoTicker.getTicker("BTC_USD");
         System.out.println("1 BTC = " + ticker.getLastTrade() + " USD");
 
+
+        /**
+         * @link https://api.exmo.com/v1/currency/
+         * method getCurrency() returnes list of String.
+         * This list is equivalen response:
+         * ["USD","EUR","RUB","BTC","DOGE","LTC"]
+         */
+        Exmo exmoCurrency = new Exmo();
+        for(String s : exmoCurrency.getCurrency()){
+            System.out.print(s + " ");
+        }
+
+
     }
 
 
