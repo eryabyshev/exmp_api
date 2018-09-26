@@ -1,5 +1,6 @@
 package exmo;
 
+import exmoException.ExmoException;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -7,6 +8,7 @@ import org.json.simple.parser.ParseException;
 import response.OrderBook;
 import response.Ticker;
 import response.Trades;
+import response.UserInfo;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -231,6 +233,46 @@ public class Exmo {
         String result = exmoFrame.publicAPIRequest("currency", null);
         JSONParser parser = new JSONParser();
         return new ArrayList<>((JSONArray) parser.parse(result));
+    }
+
+
+    private static Map<String, Double> doMapConvert(Map<String, String> input) {
+        Map<String, Double> result = new HashMap<>();
+        for (Map.Entry<String, String> entry : input.entrySet())
+            result.put(entry.getKey(), Double.valueOf(entry.getValue()));
+        return result;
+    }
+
+    /**
+     * Method getUserInfo() returns object UserInfo,
+     * witch is equivalent response:
+     * {
+     *   "uid": 10542,
+     *   "server_date": 1435518576,
+     *   "balances": {
+     *     "BTC": "970.994",
+     *     "USD": "949.47"
+     *   },
+     *   "reserved": {
+     *     "BTC": "3",
+     *     "USD": "0.5"
+     *   }
+     * }
+     * where,
+     * uid is the user ID
+     * server_date - server date and time
+     * balances - available balance of the user
+     * reserved - user balance in orders
+     */
+    public UserInfo getUserInfo() throws ExmoException, ParseException {
+        String result = exmoFrame.authenticatedRequest("user_info", null);
+        JSONParser parser = new JSONParser();
+        JSONObject jo = (JSONObject) parser.parse(result);
+        long uid = Long.valueOf(jo.get("uid").toString());
+        long serverDate = Long.valueOf(jo.get("server_date").toString());
+        Map<String, Double> balances = doMapConvert((Map<String, String>) jo.get("balances"));
+        Map<String, Double> reserved = doMapConvert((Map<String, String>) jo.get("reserved"));
+        return new UserInfo(uid, serverDate, balances, reserved);
     }
 
 

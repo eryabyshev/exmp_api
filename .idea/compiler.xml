@@ -10,7 +10,7 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="exmo_api" target="7" />
+      <module name="exmo_api" target="8" />
     </bytecodeTargetLevel>
   </component>
 </project>

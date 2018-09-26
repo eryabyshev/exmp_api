@@ -1,15 +1,18 @@
 import exmo.Exmo;
+import exmoException.ExmoException;
 import org.json.simple.parser.ParseException;
 import response.OrderBook;
 import response.Ticker;
 import response.Trades;
+import response.UserInfo;
 
 import java.util.List;
+import java.util.Map;
 
 public class Doc {
 
 
-    public static void main(String[] args) throws ParseException {
+    public static void main(String[] args) throws ParseException, ExmoException {
 
 
         /**
@@ -139,6 +142,40 @@ public class Doc {
         for(String s : exmoCurrency.getCurrency()){
             System.out.print(s + " ");
         }
+
+
+        /**
+         * Method getUserInfo() returns object UserInfo,
+         * witch is equivalent response:
+         * {
+         *   "uid": 10542,
+         *   "server_date": 1435518576,
+         *   "balances": {
+         *     "BTC": "970.994",
+         *     "USD": "949.47"
+         *   },
+         *   "reserved": {
+         *     "BTC": "3",
+         *     "USD": "0.5"
+         *   }
+         * }
+         * where,
+         * uid is the user ID
+         * server_date - server date and time
+         * balances - available balance of the user
+         * reserved - user balance in orders
+         */
+        Exmo userInfoExmo = new Exmo("K-3c71a6cc6b3af7c4ad50d864e66936fa0cea39b4",
+                                   "S-a2a3d3afb32f3639a749b0d620f328c941f67946");
+        UserInfo userInfo = userInfoExmo.getUserInfo();
+        System.out.println("My user ID : " + userInfo.getUid());
+
+        for(Map.Entry<String, Double> entry : userInfo.getBalances().entrySet()){
+            if(entry.getValue().compareTo(Double.valueOf(0d)) > 0)
+                System.out.println(entry.getKey() + " - " + entry.getValue().toString());
+        }
+
+
 
 
     }

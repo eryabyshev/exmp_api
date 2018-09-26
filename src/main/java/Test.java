@@ -6,14 +6,16 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import response.OrderBook;
 import response.Ticker;
+import response.UserInfo;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Test {
 
-        public static void main(String[] args) throws ExmoException, ParseException {
+    public static void main(String[] args) throws ExmoException, ParseException {
 
 //            ExmoFrame e = new ExmoFrame("K-3c71a6cc6b3af7c4ad50d864e66936fa0cea39b4","S-a2a3d3afb32f3639a749b0d620f328c941f67946");
 //            String result = e.authenticatedRequest("user_info", null);
@@ -64,9 +66,7 @@ public class Test {
 //            }
 
 
-
-
-            //order_book
+        //order_book
 //            ExmoFrame exmoFrame = new ExmoFrame();
 //
 //            Map<String, String> param = new HashMap<>();
@@ -131,23 +131,36 @@ public class Test {
 //                    volCurr, lastTrade, buyPrice, sellPrice, updated);
 
 
-            ExmoFrame exmoFrame = new ExmoFrame();
-            String result = exmoFrame.publicAPIRequest("currency", null);
-            JSONParser parser = new JSONParser();
-            List<String>list = new ArrayList<>((JSONArray) parser.parse(result));
+//            ExmoFrame exmoFrame = new ExmoFrame();
+//            String result = exmoFrame.publicAPIRequest("currency", null);
+//            JSONParser parser = new JSONParser();
+////            List<String>list = new ArrayList<>((JSONArray) parser.parse(result));
+//
+//
+//        ExmoFrame exmoFrame = new ExmoFrame("K-3c71a6cc6b3af7c4ad50d864e66936fa0cea39b4",
+//                "S-a2a3d3afb32f3639a749b0d620f328c941f67946");
+//
+//        String result = exmoFrame.authenticatedRequest("user_info", null);
+//        JSONParser parser = new JSONParser();
+//        JSONObject jo = (JSONObject) parser.parse(result);
+//
+//        long uid = Long.valueOf(jo.get("uid").toString());
+//        long serverDate = Long.valueOf(jo.get("server_date").toString());
+//
+//        Map<String, Double> balances = doMapConvert((Map<String, String>) jo.get("balances"));
+//        Map<String, Double> reserved = doMapConvert((Map<String, String>) jo.get("reserved"));
+//
+//        UserInfo userInfo = new UserInfo(uid, serverDate, balances, reserved);
 
 
+    }
 
-
-
-
-
-
-
-
-
-
-
-       }
+    public static Map<String, Double> doMapConvert(Map<String, String> input) {
+        Map<String, Double> result = new HashMap<>();
+        for (Map.Entry<String, String> entry : input.entrySet())
+            result.put(entry.getKey(), Double.valueOf(entry.getValue()));
+        return result;
+    }
 
 }
+
