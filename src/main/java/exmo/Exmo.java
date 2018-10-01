@@ -1,5 +1,6 @@
 package exmo;
 
+import exmoException.AuthenticatedApiException;
 import exmoException.ExmoException;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -273,6 +274,38 @@ public class Exmo {
         Map<String, Double> balances = doMapConvert((Map<String, String>) jo.get("balances"));
         Map<String, Double> reserved = doMapConvert((Map<String, String>) jo.get("reserved"));
         return new UserInfo(uid, serverDate, balances, reserved);
+    }
+
+
+
+
+    public long sell(String pairName, double quantity, double price)
+            throws ExmoException, AuthenticatedApiException, ParseException {
+        Map<String, String> argument = new HashMap<>();
+        argument.put("pair",pairName);
+        argument.put("quantity", Double.toString(quantity));
+        argument.put("price", Double.toString(price));
+        argument.put("type", "sell");
+
+        String result = exmoFrame.authenticatedRequest("order_create", argument);
+
+        JSONParser parser = new JSONParser();
+        JSONObject jo = (JSONObject) parser.parse(result);
+
+        if(jo.get("error").toString().isEmpty()) {
+            return Long.parseLong(jo.get("order_id").toString());
+        }
+        else{
+            throw new AuthenticatedApiException("[ERROR] - " + result);
+        }
+
+
+
+
+
+
+
+
     }
 
 

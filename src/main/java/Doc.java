@@ -1,4 +1,5 @@
 import exmo.Exmo;
+import exmoException.AuthenticatedApiException;
 import exmoException.ExmoException;
 import org.json.simple.parser.ParseException;
 import response.OrderBook;
@@ -12,7 +13,7 @@ import java.util.Map;
 public class Doc {
 
 
-    public static void main(String[] args) throws ParseException, ExmoException {
+    public static void main(String[] args) throws ParseException, ExmoException, AuthenticatedApiException {
 
 
         /**
@@ -174,6 +175,16 @@ public class Doc {
             if(entry.getValue().compareTo(Double.valueOf(0d)) > 0)
                 System.out.println(entry.getKey() + " - " + entry.getValue().toString());
         }
+
+
+        /**
+         * Create an order to sell 0.05 ETH at a price of 1000 USD
+         */
+        Exmo exmoSell = new Exmo("K-3c71a6cc6b3af7c4ad50d864e66936fa0cea39b4",
+                "S-a2a3d3afb32f3639a749b0d620f328c941f67946");
+
+        long orderId = exmoSell.sell("ETH_USD", 0.05, 1000);
+        System.out.println("Order ID : " + orderId);
 
 
 
