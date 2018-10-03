@@ -289,11 +289,97 @@ public class Exmo {
      */
     public long sell(String pairName, double quantity, double price)
             throws ExmoException, AuthenticatedApiException, ParseException {
+        return orderCreate(pairName, quantity, price, "sell");
+    }
+
+
+    /**
+     *
+     * @param pairName - currency pair
+     * @param quantity - order quantity
+     * @param price - order price
+     * @return
+     * @throws ExmoException
+     * @throws AuthenticatedApiException
+     * @throws ParseException
+     */
+    public long buy(String pairName, double quantity, double price)
+            throws ExmoException, AuthenticatedApiException, ParseException{
+        return orderCreate(pairName, quantity, price, "buy");
+    }
+
+
+    /**
+     * Creating a market buy order
+     * @param pairName - currency pair
+     * @param quantity - order quantity
+     * @return
+     * @throws ExmoException
+     * @throws AuthenticatedApiException
+     * @throws ParseException
+     */
+    public long marketBuy(String pairName, double quantity)
+            throws ExmoException, AuthenticatedApiException, ParseException {
+        return orderCreate(pairName, quantity, 0, "market_but");
+    }
+
+    /**
+     * Creation of a sell order by market
+     * @param pairName - currency pair
+     * @param quantity - order quantity
+     * @return
+     * @throws ExmoException
+     * @throws AuthenticatedApiException
+     * @throws ParseException
+     */
+    public long marketSell(String pairName, double quantity)
+            throws ExmoException, AuthenticatedApiException, ParseException {
+        return orderCreate(pairName, quantity, 0, "market_sell");
+    }
+
+
+    /**
+     * Creating a @param pairName purchase order for the market in the amount of @param quantity
+     * @param pairName - currency pair
+     * @param quantity - order quantity
+     * @return
+     * @throws ExmoException
+     * @throws AuthenticatedApiException
+     * @throws ParseException
+     */
+    public long marketBuyTotal(String pairName, double quantity)
+            throws ExmoException, AuthenticatedApiException, ParseException {
+        return orderCreate(pairName, quantity, 0, "market_buy_total");
+    }
+
+
+
+    /**
+     * Creating a @param pairName sale order for the market in the amount of @param quantity
+     * @param pairName - currency pair
+     * @param quantity - order quantity
+     * @return
+     * @throws ExmoException
+     * @throws AuthenticatedApiException
+     * @throws ParseException
+     */
+    public long marketSellTotal(String pairName, double quantity)
+            throws ExmoException, AuthenticatedApiException, ParseException {
+        return orderCreate(pairName, quantity, 0, "market_sell_total");
+    }
+
+
+
+
+
+
+    private long orderCreate(String pairName, double quantity, double price, String type)
+            throws ExmoException, AuthenticatedApiException, ParseException {
         Map<String, String> argument = new HashMap<>();
         argument.put("pair",pairName);
         argument.put("quantity", Double.toString(quantity));
         argument.put("price", Double.toString(price));
-        argument.put("type", "sell");
+        argument.put("type", type);
 
         String result = exmoFrame.authenticatedRequest("order_create", argument);
 
@@ -306,7 +392,12 @@ public class Exmo {
         else{
             throw new AuthenticatedApiException("[ERROR] - " + result);
         }
+
     }
+
+
+
+
 
     /**
      *

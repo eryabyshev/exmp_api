@@ -1,7 +1,7 @@
 # exmp_api
 Library for work with API EXMO.ME
 
-/**
+         /**
          * method getPairs()
          * return ArrayList of String
          * this list have all names of all pairs for trade
@@ -170,8 +170,39 @@ Library for work with API EXMO.ME
 
         long orderId = exmoSell.sell("ETH_USD", 0.05, 1000);
         System.out.println("Order ID : " + orderId);
+        
+        
+        /**
+         * Create an order to sell 0.05 ETH at a price of 1000 USD
+         */
+        Exmo exmoSell = new Exmo("K-3c71a6cc6b3af7c4ad50d864e66936fa0cea39b4",
+                "S-a2a3d3afb32f3639a749b0d620f328c941f67946");
+
+        long orderId = exmoSell.sell("ETH_USD", 0.05, 1000);
+        System.out.println("Order ID : " + orderId);
+        /**
+         * Cancel order from exmoSell
+         */
+        Thread.sleep(2000);
+
+        try{
+            exmoSell.orderCancel(orderId);
+        }catch (AuthenticatedApiException e){
+            System.out.println("Сould not cancel order ID " + orderId);
+        }
+        System.out.println("Order ID " + orderId +" has been canceled ");
+        
+        
+        
+        /**
+         * Creating a sell order on the market 0.02 ETH
+         */
+        Exmo exmoMarketSell = new Exmo( "K-3c71a6cc6b3af7c4ad50d864e66936fa0cea39b4",
+                "S-a2a3d3afb32f3639a749b0d620f328c941f67946");
+        long orderId = exmoMarketSell.marketSell("ETH_USD", 0.02);
+        System.out.println("Order ID : " + orderId);
 
 
 
 
-    }
+
