@@ -277,8 +277,16 @@ public class Exmo {
     }
 
 
-
-
+    /**
+     *
+     * @param pairName - currency pair
+     * @param quantity - order quantity
+     * @param price - order price
+     * @return
+     * @throws ExmoException
+     * @throws AuthenticatedApiException
+     * @throws ParseException
+     */
     public long sell(String pairName, double quantity, double price)
             throws ExmoException, AuthenticatedApiException, ParseException {
         Map<String, String> argument = new HashMap<>();
@@ -298,12 +306,25 @@ public class Exmo {
         else{
             throw new AuthenticatedApiException("[ERROR] - " + result);
         }
+    }
 
+    /**
+     *
+     * @param orderId - order identifier
+     * @throws ExmoException
+     * @throws AuthenticatedApiException
+     * @throws ParseException
+     */
 
-
-
-
-
+    public void orderCancel(long orderId) throws ExmoException, AuthenticatedApiException, ParseException {
+        Map<String, String> arguments = new HashMap<>();
+        arguments.put("order_id", Long.toString(orderId));
+        String result = exmoFrame.authenticatedRequest("order_cancel", arguments);
+        System.out.println(result);
+        JSONParser parser = new JSONParser();
+        JSONObject jo = (JSONObject) parser.parse(result);
+        if(!jo.get("error").toString().isEmpty())
+            throw new AuthenticatedApiException("[ERROR] - " + result);
 
 
     }

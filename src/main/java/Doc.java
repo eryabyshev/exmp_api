@@ -13,7 +13,7 @@ import java.util.Map;
 public class Doc {
 
 
-    public static void main(String[] args) throws ParseException, ExmoException, AuthenticatedApiException {
+    public static void main(String[] args) throws ParseException, ExmoException, AuthenticatedApiException, InterruptedException {
 
 
         /**
@@ -185,6 +185,20 @@ public class Doc {
 
         long orderId = exmoSell.sell("ETH_USD", 0.05, 1000);
         System.out.println("Order ID : " + orderId);
+        /**
+         * Cancel order from exmoSell
+         */
+        Thread.sleep(2000);
+
+        try{
+            exmoSell.orderCancel(orderId);
+        }catch (AuthenticatedApiException e){
+            System.out.println("Сould not cancel order ID " + orderId);
+        }
+        System.out.println("Order ID " + orderId +" has been canceled ");
+
+
+
 
 
 
