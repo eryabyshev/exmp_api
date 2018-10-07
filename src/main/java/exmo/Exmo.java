@@ -6,10 +6,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import response.OrderBook;
-import response.Ticker;
-import response.Trades;
-import response.UserInfo;
+import response.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -396,9 +393,6 @@ public class Exmo {
     }
 
 
-
-
-
     /**
      *
      * @param orderId - order identifier
@@ -417,6 +411,61 @@ public class Exmo {
         if(!jo.get("error").toString().isEmpty())
             throw new AuthenticatedApiException("[ERROR] - " + result);
 
+
+    }
+
+    /**
+     * Method userOpenOrders()
+     * returns List of Order object,this object is equivalent
+     * response:
+     * {
+     *   "BTC_USD": [
+     *     {
+     *       "order_id": "14",
+     *       "created": "1435517311",
+     *       "type": "buy",
+     *       "pair": "BTC_USD",
+     *       "price": "100",
+     *       "quantity": "1",
+     *       "amount": "100"
+     *     }
+     *   ]
+     * }
+     *  where,
+     * order_id - идентификатор ордера
+     * created - дата и время создания ордер
+     * type - тип ордера
+     * pair - валютная пара
+     * price - цена по ордеру
+     * quantity - кол-во по ордеру
+     * amount - сумма по ордеру
+     *
+     * @return list of open orders
+     * @throws ExmoException
+     * @throws ParseException
+     */
+
+
+    public List<Order> userOpenOrders() throws ExmoException, ParseException {
+        String result = exmoFrame.authenticatedRequest("user_open_orders", null);
+        Map<String, JSONArray> map = (JSONObject)new JSONParser().parse(result);
+        List<Order> orders = new ArrayList<>();
+        for(Map.Entry<String, JSONArray> entry : map.entrySet()){
+            JSONArray ja = entry.getValue();
+            for (Object jo : ja){
+                JSONObject item = (JSONObject) jo;
+                orders.add(new Order(Long.valueOf(item.get("order_id").toString()),
+                        Long.valueOf(item.get("created").toString()),
+                        item.get("type").toString(),
+                        item.get("pair").toString(),
+                        Double.valueOf(item.get("price").toString()),
+                        Double.valueOf(item.get("quantity").toString()),
+                        Double.valueOf(item.get("amount").toString())));
+
+            }
+
+        }
+        return orders;
 
     }
 
