@@ -8,10 +8,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import response.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Exmo {
 
@@ -84,7 +81,11 @@ public class Exmo {
         JSONParser parser = new JSONParser();
         Object obj = parser.parse(tradesResult);
         JSONObject jo = (JSONObject) obj;
+        return getTradesList(jo, pairName);
+    }
 
+
+    private static List<Trades> getTradesList(JSONObject jo, String pairName) {
         List<JSONObject> jsonObjectList = (List<JSONObject>) jo.get(pairName);
 
         List<Trades> trades = new ArrayList<>();
@@ -99,7 +100,9 @@ public class Exmo {
         }
 
         return trades;
+
     }
+
 
 
     /**
@@ -469,9 +472,21 @@ public class Exmo {
 
     }
 
+    public Map<String,List<Trades>> userTrades(int offset, int limit, String pairs) throws ExmoException, ParseException {
 
-
-
-
-
+        Map<String, String> arguments = new HashMap<>();
+        arguments.put("limit", Integer.toString(limit));
+        arguments.put("offset", Integer.toString(offset));
+        arguments.put("pair", pairs);
+        String orderTrades = exmoFrame.authenticatedRequest("user_trades", arguments);
+        JSONParser parser = new JSONParser();
+        Object obj = parser.parse(orderTrades);
+        JSONObject jo = (JSONObject) obj;
+        Map<String,List<Trades>> result = new HashMap<>();
+        String[] split = pairs.split(",");
+        for (String pair : split) {
+            result.put(pair, getTradesList(jo, pair));
+        }
+        return result;
+    }
 }
