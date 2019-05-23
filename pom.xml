@@ -6,7 +6,7 @@
 
     <groupId>ru.evgeny.exmo</groupId>
     <artifactId>exmo_api</artifactId>
-    <version>1.0</version>
+    <version>1.1</version>
 
 
     <properties>
