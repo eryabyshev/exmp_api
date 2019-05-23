@@ -1,5 +1,8 @@
 package exmo;
 
+import com.google.gson.FieldNamingPolicy;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import exmoException.AuthenticatedApiException;
 import exmoException.ExmoException;
 import org.json.simple.JSONArray;
@@ -98,12 +101,8 @@ public class Exmo {
                     Double.valueOf(j.get("price").toString()),
                     j.get("type").toString()));
         }
-
         return trades;
-
     }
-
-
 
     /**
      * @link https://api.exmo.com/v1/order_book/?pair=BTC_USD
@@ -473,7 +472,6 @@ public class Exmo {
     }
 
     public Map<String,List<Trades>> userTrades(int offset, int limit, String pairs) throws ExmoException, ParseException {
-
         Map<String, String> arguments = new HashMap<>();
         arguments.put("limit", Integer.toString(limit));
         arguments.put("offset", Integer.toString(offset));
@@ -486,6 +484,25 @@ public class Exmo {
         String[] split = pairs.split(",");
         for (String pair : split) {
             result.put(pair, getTradesList(jo, pair));
+        }
+        return result;
+    }
+
+    public Map<String, Pair> pairSettings() throws ParseException {
+        ExmoFrame exmoFrame = new ExmoFrame();
+        JSONParser parser = new JSONParser();
+        Object object = parser.parse(exmoFrame.publicAPIRequest("pair_settings", null));
+
+        JSONObject jo = (JSONObject)object;
+        Map<String, Pair> result = new HashMap<>();
+        List<String> pairs = getPairs();
+        Gson gson = new GsonBuilder()
+                .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
+                .create();
+        for (String p : pairs){
+            Pair pair = gson.fromJson(jo.get(p).toString(), Pair.class);
+            pair.setName(p);
+            result.put(p, pair);
         }
         return result;
     }

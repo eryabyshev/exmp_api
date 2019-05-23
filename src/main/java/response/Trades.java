@@ -1,8 +1,17 @@
 package response;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Trades {
 
 
@@ -14,6 +23,7 @@ public class Trades {
     private double price;
     private String type;
 
+
     public Trades(long date, double amount, long tradeId, double quantity, double price, String type) {
         this.date = new Date(date);
         this.amount = amount;
@@ -23,62 +33,4 @@ public class Trades {
         this.type = type;
     }
 
-
-    public Date getDate() {
-        return date;
-    }
-
-    public long getDateLongTime(){
-        return date.getTime();
-    }
-
-
-    public String getDateSting(){
-        SimpleDateFormat dt = new SimpleDateFormat("dd-MM-yyy hh:mm:ss");
-        return dt.format(date);
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-    public double getAmount() {
-        return amount;
-    }
-
-    public void setAmount(double amount) {
-        this.amount = amount;
-    }
-
-    public long getTradeId() {
-        return tradeId;
-    }
-
-    public void setTradeId(long tradeId) {
-        this.tradeId = tradeId;
-    }
-
-    public double getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(double quantity) {
-        this.quantity = quantity;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
 }
